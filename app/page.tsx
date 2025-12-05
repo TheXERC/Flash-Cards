@@ -215,15 +215,15 @@ export default function FlashCardsPage() {
             <CardContent>
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
-                  <Card className="border-green-200 dark:border-green-900">
+                  <Card className="border-success/20">
                     <CardContent className="pt-6 text-center">
-                      <div className="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">{correctCount}</div>
+                      <div className="text-4xl font-bold text-success mb-2">{correctCount}</div>
                       <div className="text-sm text-muted-foreground">Correct</div>
                     </CardContent>
                   </Card>
-                  <Card className="border-red-200 dark:border-red-900">
+                  <Card className="border-destructive/20">
                     <CardContent className="pt-6 text-center">
-                      <div className="text-4xl font-bold text-red-600 dark:text-red-400 mb-2">{incorrectCount}</div>
+                      <div className="text-4xl font-bold text-destructive mb-2">{incorrectCount}</div>
                       <div className="text-sm text-muted-foreground">Incorrect</div>
                     </CardContent>
                   </Card>
@@ -262,52 +262,62 @@ export default function FlashCardsPage() {
               </div>
           
           <CardContent 
-            className="min-h-[400px] p-6 sm:p-8 flex flex-col justify-center cursor-pointer hover:bg-accent/50 transition-colors"
-            onClick={toggleAnswer}
+            className="min-h-[400px] p-6 sm:p-8 flex flex-col justify-between"
             dir={direction}
           >
-            <div className="space-y-4">
-              <Badge variant="outline" className="w-fit">Question</Badge>
-              <p className="text-xl sm:text-2xl font-medium leading-relaxed">{currentCard.question}</p>
+            <div 
+              className="flex-1 flex flex-col justify-center cursor-pointer hover:opacity-90 transition-opacity"
+              onClick={toggleAnswer}
+            >
+              <div className="space-y-4">
+                <Badge variant="outline" className="w-fit">Question</Badge>
+                <p className="text-xl sm:text-2xl font-medium leading-relaxed">{currentCard.question}</p>
+              </div>
+
+              {showAnswer ? (
+                <>
+                  <Separator className="my-8" />
+                  <div className="space-y-4">
+                    <Badge variant="default" className="w-fit">Answer</Badge>
+                    <p className="text-lg sm:text-xl leading-relaxed">{currentCard.answer}</p>
+                  </div>
+                </>
+              ) : (
+                <p className="text-center text-muted-foreground mt-8 text-sm italic">Click to reveal answer</p>
+              )}
             </div>
 
-            {showAnswer ? (
-              <>
-                <Separator className="my-8" />
-                <div className="space-y-4">
-                  <Badge variant="default" className="w-fit">Answer</Badge>
-                  <p className="text-lg sm:text-xl leading-relaxed">{currentCard.answer}</p>
-                </div>
-              </>
-            ) : (
-              <p className="text-center text-muted-foreground mt-8 text-sm italic">Click to reveal answer</p>
-            )}
-          </CardContent>
-        </Card>
-
             {showAnswer && (
-              <div className="flex gap-3 sm:gap-4 justify-center items-center mb-4">
+              <div className="flex gap-3 sm:gap-4 justify-center items-center mt-8 pt-6 border-t">
                 <Button 
-                  onClick={() => markCard(false)} 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    markCard(false);
+                  }} 
                   variant="destructive" 
                   size="lg" 
-                  className="flex-1 sm:flex-initial sm:min-w-[140px]"
+                  className="flex-1 sm:flex-initial sm:min-w-[140px] shadow-sm"
                 >
                   <X className="h-5 w-5 me-2" />
                   <span>Incorrect</span>
                 </Button>
 
                 <Button 
-                  onClick={() => markCard(true)} 
-                  variant="default" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    markCard(true);
+                  }} 
+                  variant="success"
                   size="lg"
-                  className="flex-1 sm:flex-initial sm:min-w-[140px] bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800"
+                  className="flex-1 sm:flex-initial sm:min-w-[140px]"
                 >
                   <Check className="h-5 w-5 me-2" />
                   <span>Correct</span>
                 </Button>
               </div>
             )}
+          </CardContent>
+        </Card>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-8">
               <Button onClick={previousCard} disabled={currentCardIndex === 0} variant="outline" size="lg" className="w-full sm:w-auto">
@@ -344,8 +354,8 @@ export default function FlashCardsPage() {
                 <div className="flex justify-between text-sm text-muted-foreground">
                   <span>Progress</span>
                   <div className="flex items-center gap-4">
-                    <span className="text-green-600 dark:text-green-400">✓ {correctCount}</span>
-                    <span className="text-red-600 dark:text-red-400">✗ {incorrectCount}</span>
+                    <span className="text-success">✓ {correctCount}</span>
+                    <span className="text-destructive">✗ {incorrectCount}</span>
                     <span>{Math.round(progress)}%</span>
                   </div>
                 </div>
