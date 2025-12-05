@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ChevronLeft, ChevronRight, Eye, EyeOff, ArrowLeftRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Eye, EyeOff, ArrowLeftRight, Check, X, RotateCcw } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 
 export default function FlashCardsPage() {
@@ -19,6 +19,10 @@ export default function FlashCardsPage() {
   const [direction, setDirection] = useState<Direction>('rtl');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [reviewQueue, setReviewQueue] = useState<number[]>([]);
+  const [reviewedCards, setReviewedCards] = useState<Map<number, boolean>>(new Map());
+  const [isReviewing, setIsReviewing] = useState(false);
+  const [showReviewComplete, setShowReviewComplete] = useState(false);
 
   useEffect(() => {
     const fetchFlashCards = async () => {
@@ -38,20 +42,78 @@ export default function FlashCardsPage() {
   }, []);
 
   const currentSet = useMemo(() => flashCardSets[currentSetIndex], [flashCardSets, currentSetIndex]);
-  const currentCard = useMemo(() => currentSet?.cards[currentCardIndex], [currentSet, currentCardIndex]);
+  const currentCard = useMemo(() => {
+    const index = isReviewing ? reviewQueue[currentCardIndex] : currentCardIndex;
+    return currentSet?.cards[index];
+  }, [currentSet, currentCardIndex, isReviewing, reviewQueue]);
   const totalCards = useMemo(() => currentSet?.cards.length || 0, [currentSet]);
+  const activeCards = useMemo(() => isReviewing ? reviewQueue.length : totalCards, [isReviewing, reviewQueue.length, totalCards]);
   const progress = useMemo(() => 
-    totalCards > 0 ? ((currentCardIndex + 1) / totalCards) * 100 : 0,
-    [currentCardIndex, totalCards]
+    activeCards > 0 ? ((currentCardIndex + 1) / activeCards) * 100 : 0,
+    [currentCardIndex, activeCards]
+  );
+  const correctCount = useMemo(() => 
+    Array.from(reviewedCards.values()).filter(correct => correct).length,
+    [reviewedCards]
+  );
+  const incorrectCount = useMemo(() => 
+    Array.from(reviewedCards.values()).filter(correct => !correct).length,
+    [reviewedCards]
   );
 
+  const markCard = useCallback((correct: boolean) => {
+    const actualIndex = isReviewing ? reviewQueue[currentCardIndex] : currentCardIndex;
+    setReviewedCards(prev => {
+      const updated = new Map(prev);
+      updated.set(actualIndex, correct);
+      return updated;
+    });
+
+    if (!isReviewing) {
+      setReviewQueue(prev => {
+        if (correct) {
+          return prev.filter(index => index !== actualIndex);
+        }
+        if (prev.includes(actualIndex)) {
+          return prev;
+        }
+        return [...prev, actualIndex];
+      });
+    }
+    
+    const maxIndex = isReviewing ? reviewQueue.length - 1 : totalCards - 1;
+    if (currentCardIndex < maxIndex) {
+      setCurrentCardIndex(prev => prev + 1);
+      setShowAnswer(false);
+    } else {
+      setShowReviewComplete(true);
+    }
+  }, [currentCardIndex, isReviewing, reviewQueue, totalCards]);
+
+  const startReview = useCallback(() => {
+    setIsReviewing(true);
+    setCurrentCardIndex(0);
+    setShowAnswer(false);
+    setShowReviewComplete(false);
+  }, []);
+
+  const resetReview = useCallback(() => {
+    setReviewQueue([]);
+    setReviewedCards(new Map());
+    setIsReviewing(false);
+    setCurrentCardIndex(0);
+    setShowAnswer(false);
+    setShowReviewComplete(false);
+  }, []);
+
   const navigateCard = useCallback((direction: 'next' | 'prev') => {
+    const maxIndex = isReviewing ? reviewQueue.length - 1 : totalCards - 1;
     const newIndex = direction === 'next' ? currentCardIndex + 1 : currentCardIndex - 1;
-    if (newIndex >= 0 && newIndex < totalCards) {
+    if (newIndex >= 0 && newIndex <= maxIndex) {
       setCurrentCardIndex(newIndex);
       setShowAnswer(false);
     }
-  }, [currentCardIndex, totalCards]);
+  }, [currentCardIndex, isReviewing, reviewQueue.length, totalCards]);
 
   const nextCard = useCallback(() => navigateCard('next'), [navigateCard]);
   const previousCard = useCallback(() => navigateCard('prev'), [navigateCard]);
@@ -60,7 +122,8 @@ export default function FlashCardsPage() {
     setCurrentSetIndex(index);
     setCurrentCardIndex(0);
     setShowAnswer(false);
-  }, []);
+    resetReview();
+  }, [resetReview]);
 
   const toggleDirection = useCallback(() => 
     setDirection(prev => prev === 'ltr' ? 'rtl' : 'ltr'),
@@ -143,15 +206,60 @@ export default function FlashCardsPage() {
           </CardContent>
         </Card>
 
-        <Card className="mb-8 overflow-hidden">
-          <div className="bg-primary text-primary-foreground px-6 py-4 rounded-t-xl">
-            <div className="flex justify-between items-center gap-4">
-              <Badge variant="secondary" className="text-sm font-semibold shrink-0">
-                Card {currentCardIndex + 1} of {totalCards}
-              </Badge>
-              <span className="text-sm opacity-90 truncate">{currentSet.filename}</span>
-            </div>
-          </div>
+        {showReviewComplete ? (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="text-center text-2xl">Review Complete! 🎉</CardTitle>
+              <CardDescription className="text-center">Great job studying!</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <Card className="border-green-200 dark:border-green-900">
+                    <CardContent className="pt-6 text-center">
+                      <div className="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">{correctCount}</div>
+                      <div className="text-sm text-muted-foreground">Correct</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="border-red-200 dark:border-red-900">
+                    <CardContent className="pt-6 text-center">
+                      <div className="text-4xl font-bold text-red-600 dark:text-red-400 mb-2">{incorrectCount}</div>
+                      <div className="text-sm text-muted-foreground">Incorrect</div>
+                    </CardContent>
+                  </Card>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  {!isReviewing && reviewQueue.length > 0 && (
+                    <Button onClick={startReview} size="lg" className="w-full sm:w-auto">
+                      <RotateCcw className="h-4 w-4 me-2" />
+                      <span>Review Incorrect ({reviewQueue.length})</span>
+                    </Button>
+                  )}
+                  <Button onClick={resetReview} variant="outline" size="lg" className="w-full sm:w-auto">
+                    <RotateCcw className="h-4 w-4 me-2" />
+                    <span>Start Over</span>
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <>
+            <Card className="mb-8 overflow-hidden">
+              <div className="bg-primary text-primary-foreground px-6 py-4 rounded-t-xl">
+                <div className="flex justify-between items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary" className="text-sm font-semibold shrink-0">
+                      Card {currentCardIndex + 1} of {activeCards}
+                    </Badge>
+                    {isReviewing && (
+                      <Badge variant="destructive" className="text-sm font-semibold">Review</Badge>
+                    )}
+                  </div>
+                  <span className="text-sm opacity-90 truncate">{currentSet.filename}</span>
+                </div>
+              </div>
           
           <CardContent 
             className="min-h-[400px] p-6 sm:p-8 flex flex-col justify-center cursor-pointer hover:bg-accent/50 transition-colors"
@@ -177,37 +285,75 @@ export default function FlashCardsPage() {
           </CardContent>
         </Card>
 
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-8">
-          <Button onClick={previousCard} disabled={currentCardIndex === 0} variant="outline" size="lg" className="w-full sm:w-auto">
-            <ChevronLeft className="h-4 w-4 me-2" />
-            <span>Previous</span>
-          </Button>
+            {showAnswer && (
+              <div className="flex gap-3 sm:gap-4 justify-center items-center mb-4">
+                <Button 
+                  onClick={() => markCard(false)} 
+                  variant="destructive" 
+                  size="lg" 
+                  className="flex-1 sm:flex-initial sm:min-w-[140px]"
+                >
+                  <X className="h-5 w-5 me-2" />
+                  <span>Incorrect</span>
+                </Button>
 
-          <Button onClick={toggleAnswer} variant="default" size="lg" className="w-full sm:w-auto">
-            {showAnswer ? (
-              <><EyeOff className="h-4 w-4 me-2" /><span>Hide Answer</span></>
-            ) : (
-              <><Eye className="h-4 w-4 me-2" /><span>Show Answer</span></>
-            )}
-          </Button>
-
-          <Button onClick={nextCard} disabled={currentCardIndex === totalCards - 1} variant="outline" size="lg" className="w-full sm:w-auto">
-            <span>Next</span>
-            <ChevronRight className="h-4 w-4 ms-2" />
-          </Button>
-        </div>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Progress</span>
-                <span>{Math.round(progress)}%</span>
+                <Button 
+                  onClick={() => markCard(true)} 
+                  variant="default" 
+                  size="lg"
+                  className="flex-1 sm:flex-initial sm:min-w-[140px] bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800"
+                >
+                  <Check className="h-5 w-5 me-2" />
+                  <span>Correct</span>
+                </Button>
               </div>
-              <Progress value={progress} className="h-3" />
+            )}
+
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-8">
+              <Button onClick={previousCard} disabled={currentCardIndex === 0} variant="outline" size="lg" className="w-full sm:w-auto">
+                <ChevronLeft className="h-4 w-4 me-2" />
+                <span>Previous</span>
+              </Button>
+
+              <Button onClick={toggleAnswer} variant="default" size="lg" className="w-full sm:w-auto">
+                {showAnswer ? (
+                  <>
+                    <EyeOff className="h-4 w-4 me-2" />
+                    <span>Hide Answer</span>
+                  </>
+                ) : (
+                  <>
+                    <Eye className="h-4 w-4 me-2" />
+                    <span>Show Answer</span>
+                  </>
+                )}
+              </Button>
+
+              <Button onClick={nextCard} disabled={currentCardIndex === activeCards - 1} variant="outline" size="lg" className="w-full sm:w-auto">
+                <span>Next</span>
+                <ChevronRight className="h-4 w-4 ms-2" />
+              </Button>
             </div>
-          </CardContent>
-        </Card>
+          </>
+        )}
+
+        {!showReviewComplete && (
+          <Card>
+            <CardContent className="pt-6">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span>Progress</span>
+                  <div className="flex items-center gap-4">
+                    <span className="text-green-600 dark:text-green-400">✓ {correctCount}</span>
+                    <span className="text-red-600 dark:text-red-400">✗ {incorrectCount}</span>
+                    <span>{Math.round(progress)}%</span>
+                  </div>
+                </div>
+                <Progress value={progress} className="h-3" />
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

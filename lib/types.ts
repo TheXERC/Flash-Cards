@@ -8,4 +8,10 @@ export interface FlashCardSet {
   cards: FlashCard[];
 }
 
+export interface CardReviewState {
+  index: number;
+  marked: boolean;
+  correct: boolean | null;
+}
+
 export type Direction = 'ltr' | 'rtl';
