@@ -1,161 +1,321 @@
 <div align="center">
 
-# 📚 Flash Cards
+<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Card%20Index%20Dividers.png" alt="Flash Cards" width="120" />
 
-### Transform NotebookLM exports into beautiful offline flashcards
+# Flash Cards
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+### 🧠 Transform NotebookLM Exports into Beautiful Offline Flashcards
 
-*The perfect study companion for students — works completely offline!*
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+<br />
+
+**The ultimate study companion for students**  
+*Export from NotebookLM → Study offline → Ace your exams* 🎯
+
+[Getting Started](#-quick-start) •
+[Features](#-features) •
+[Usage](#-adding-your-flash-cards) •
+[Contributing](#-contributing)
 
 </div>
 
----
-
-## ✨ What is this?
-
-**Flash Cards** takes CSV exports from [Google NotebookLM](https://notebooklm.google.com/) and transforms them into a beautiful, interactive flashcard experience. Study anywhere, anytime — no internet required after initial setup!
-
-Perfect for:
-- 🎓 **Students** preparing for exams
-- 📖 **Learners** memorizing vocabulary or concepts
-- 🧠 **Anyone** who wants to retain information effectively
+<br />
 
 ---
 
-## 🚀 Features
+<br />
 
-| Feature | Description |
-|---------|-------------|
-| 📁 **Multi-file Support** | Load multiple CSV files and switch between topics |
-| 🔄 **RTL/LTR Toggle** | Full support for right-to-left languages (Arabic, Persian, Hebrew) |
-| 🎴 **Interactive Cards** | Click to flip and reveal answers |
-| 📊 **Progress Tracking** | Visual progress bar shows your study progress |
-| 🌙 **Dark/Light Mode** | Easy on the eyes, day or night |
-| ⌨️ **Keyboard Navigation** | Navigate with arrow keys for faster studying |
-| 📱 **Fully Responsive** | Works beautifully on desktop, tablet, and mobile |
-| 🔌 **Offline Ready** | Study without internet after initial load |
+## 💡 About
+
+**Flash Cards** is a modern web application designed for students who use [Google NotebookLM](https://notebooklm.google.com/) to study. It transforms CSV exports from NotebookLM into beautiful, interactive flashcards that work **completely offline**.
+
+Built with the latest technologies and optimized for studying in any language — including **full RTL support** for Persian (فارسی), Arabic, and Hebrew.
+
+<br />
+
+### 🎯 Perfect For
+
+| 🩺 Medical & Veterinary Students | 📚 University Students | 🌍 Language Learners |
+|:---:|:---:|:---:|
+| Study complex terminology, diseases, and procedures | Review lecture notes and exam material | Memorize vocabulary with native RTL support |
+
+<br />
 
 ---
 
-## 📸 How It Works
+<br />
+
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 📱 Modern Interface
+- Clean, distraction-free design
+- Smooth animations and transitions
+- Responsive on all devices
+- Dark & Light mode support
+
+</td>
+<td width="50%">
+
+### 🌐 Multi-Language Ready
+- Full RTL/LTR toggle support
+- Perfect for Persian (فارسی) content
+- Arabic & Hebrew compatible
+- Unicode text rendering
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 📊 Study Tools
+- Visual progress tracking
+- Multiple flashcard sets
+- Click-to-reveal answers
+- Card counter display
+
+</td>
+<td width="50%">
+
+### ⚡ Performance
+- Works offline after first load
+- Lightning-fast navigation
+- No account required
+- Zero data collection
+
+</td>
+</tr>
+</table>
+
+<br />
+
+---
+
+<br />
+
+## 🔄 How It Works
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                                                             │
-│   NotebookLM  ──►  Export CSV  ──►  Drop in /csv folder    │
-│                                                             │
-│                         ▼                                   │
-│                                                             │
-│              ┌─────────────────────┐                        │
-│              │    Flash Cards      │                        │
-│              │    Application      │                        │
-│              │                     │                        │
-│              │   Q: Question?      │                        │
-│              │   ─────────────     │                        │
-│              │   [Click to flip]   │                        │
-│              └─────────────────────┘                        │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+╔═══════════════════════════════════════════════════════════════════╗
+║                                                                   ║
+║   📓 NotebookLM                                                   ║
+║      │                                                            ║
+║      ▼                                                            ║
+║   📄 Export as CSV ────────────────────┐                          ║
+║                                        │                          ║
+║                                        ▼                          ║
+║                            ┌───────────────────┐                  ║
+║                            │   📁 /csv folder  │                  ║
+║                            └─────────┬─────────┘                  ║
+║                                      │                            ║
+║                                      ▼                            ║
+║                     ╔═══════════════════════════════╗             ║
+║                     ║                               ║             ║
+║                     ║    ┌─────────────────────┐    ║             ║
+║                     ║    │   ❓ Question       │    ║             ║
+║                     ║    │   ───────────────   │    ║             ║
+║                     ║    │                     │    ║             ║
+║                     ║    │   💡 Answer         │    ║             ║
+║                     ║    └─────────────────────┘    ║             ║
+║                     ║                               ║             ║
+║                     ║      [ ◀ ]  [ 👁 ]  [ ▶ ]     ║             ║
+║                     ║                               ║             ║
+║                     ╚═══════════════════════════════╝             ║
+║                                                                   ║
+║                         🎓 Study & Learn!                         ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝
 ```
 
+<br />
+
 ---
+
+<br />
 
 ## 🛠️ Quick Start
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) 18+ installed
+- [Node.js](https://nodejs.org/) **18+** installed on your machine
 
 ### Installation
 
 ```bash
-# Clone the repository
+# 1️⃣ Clone the repository
 git clone https://github.com/TheXERC/Flash-Cards.git
 
-# Navigate to project folder
+# 2️⃣ Navigate to project folder
 cd Flash-Cards
 
-# Install dependencies
+# 3️⃣ Install dependencies
 npm install
 
-# Start the development server
+# 4️⃣ Start the development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser and start studying! 🎉
+### 🚀 Launch
+
+Open **[http://localhost:3000](http://localhost:3000)** in your browser and start studying!
+
+### 📦 Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+<br />
 
 ---
 
+<br />
+
 ## 📁 Adding Your Flash Cards
 
-1. **Export from NotebookLM** — Download your study material as CSV
-2. **Drop the file** — Place your `.csv` file in the `/csv` folder
-3. **Refresh** — Your new flashcard set appears automatically!
+### Step-by-Step Guide
+
+1. **📓 Open NotebookLM** — Go to [notebooklm.google.com](https://notebooklm.google.com/)
+2. **📤 Export your notes** — Download your study material as CSV
+3. **📂 Add to project** — Place your `.csv` file in the `/csv` folder
+4. **🔄 Refresh browser** — Your new flashcard set appears automatically!
 
 ### CSV Format
 
 ```csv
 Question text,Answer text
-Another question,Another answer
-What is the capital of France?,Paris
+What causes FMD?,Family Picornaviridae, genus Aphthovirus
+عامل بیماری تب برفکی چیست؟,خانواده Picornaviridae و جنس Aphthovirus
 ```
 
-> 💡 **Tip:** Each line = one flashcard. Question and answer separated by comma.
+> 💡 **Tip:** Each line = one flashcard. Question and answer separated by comma.  
+> 📝 **Note:** Supports any language including Persian, Arabic, and more!
+
+<br />
 
 ---
 
-## 📂 Project Structure
+<br />
+
+## 🏗️ Project Structure
 
 ```
 Flash-Cards/
-├── 📁 app/
-│   ├── 📁 api/flashcards/    # API endpoint for CSV data
-│   ├── globals.css           # Global styles
-│   ├── layout.tsx            # Root layout
-│   └── page.tsx              # Main flashcard viewer
-├── 📁 components/            # Reusable UI components
-├── 📁 csv/                   # 👈 Your flashcard files go here!
-├── 📁 lib/                   # Utilities and types
-└── 📄 package.json
+│
+├── 📂 app/
+│   ├── 📂 api/flashcards/      # REST API for CSV data
+│   │   └── route.ts            # API endpoint handler
+│   ├── globals.css             # Global styles & themes
+│   ├── layout.tsx              # Root layout with providers
+│   └── page.tsx                # Main flashcard interface
+│
+├── 📂 components/
+│   ├── theme-provider.tsx      # Dark/Light mode provider
+│   ├── theme-toggle.tsx        # Theme switch button
+│   └── 📂 ui/                  # shadcn/ui components
+│       ├── badge.tsx
+│       ├── button.tsx
+│       ├── card.tsx
+│       └── ...
+│
+├── 📂 csv/                     # 👈 YOUR FLASHCARDS GO HERE!
+│   ├── 1.csv
+│   ├── 2.csv
+│   └── 3.csv
+│
+├── 📂 lib/
+│   ├── csv-reader.ts           # CSV parsing utility
+│   ├── types.ts                # TypeScript definitions
+│   └── utils.ts                # Helper functions
+│
+├── components.json             # shadcn/ui configuration
+├── tailwind.config.ts          # Tailwind CSS config
+├── tsconfig.json               # TypeScript config
+└── package.json
 ```
 
----
-
-## ⌨️ Keyboard Shortcuts
-
-| Key | Action |
-|-----|--------|
-| `→` | Next card |
-| `←` | Previous card |
-| `Space` | Flip card |
+<br />
 
 ---
+
+<br />
+
+## 🛠️ Tech Stack
+
+| Technology | Version | Purpose |
+|:-----------|:-------:|:--------|
+| **Next.js** | 16 | React framework with App Router |
+| **React** | 19 | UI library |
+| **TypeScript** | 5.9 | Type-safe development |
+| **Tailwind CSS** | 4 | Utility-first styling |
+| **shadcn/ui** | Latest | Beautiful UI components |
+| **Radix UI** | Latest | Accessible primitives |
+| **Lucide Icons** | Latest | Beautiful icons |
+
+<br />
+
+---
+
+<br />
 
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to:
+Contributions make the open-source community amazing! Any contributions are **greatly appreciated**.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+```bash
+# Fork the repo, then:
+git checkout -b feature/AmazingFeature
+git commit -m 'Add some AmazingFeature'
+git push origin feature/AmazingFeature
+# Open a Pull Request
+```
+
+<br />
 
 ---
+
+<br />
 
 ## 📜 License
 
-This project is open source and available under the [MIT License](LICENSE).
+Distributed under the **MIT License**. See `LICENSE` for more information.
+
+<br />
 
 ---
 
+<br />
+
 <div align="center">
+
+## 👨‍💻 Author
+
+**Mohammad Tajik**  
+🩺 Veterinary Medicine Student | 🇮🇷 Iran
+
+<br />
+
+---
+
+<br />
+
+### ⭐ Show Your Support
+
+If this project helped you study, give it a **star**!
+
+<br />
 
 **Made with ❤️ for students everywhere**
 
-*Star ⭐ this repo if you find it helpful!*
+*Happy Studying!* 📚✨
 
 </div>
