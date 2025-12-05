@@ -1,111 +1,161 @@
-# Flash Cards Application
+<div align="center">
 
-A clean and interactive flash card application built with Next.js, TypeScript, and Tailwind CSS. This app reads CSV files exported from Google's NotebookLM and displays them as beautiful, interactive flash cards.
+# 📚 Flash Cards
 
-## Features
+### Transform NotebookLM exports into beautiful offline flashcards
 
-- 📚 **Multi-file support**: Load multiple CSV files from the `csv` folder
-- 🔄 **RTL/LTR support**: Toggle between right-to-left and left-to-right text direction
-- 🎴 **Interactive cards**: Click to reveal answers
-- 📊 **Progress tracking**: Visual progress bar shows your current position
-- 🎨 **Clean UI**: Modern, responsive design with smooth animations
-- ⌨️ **Easy navigation**: Previous/Next buttons to move through cards
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 
-## Project Structure
+*The perfect study companion for students — works completely offline!*
+
+</div>
+
+---
+
+## ✨ What is this?
+
+**Flash Cards** takes CSV exports from [Google NotebookLM](https://notebooklm.google.com/) and transforms them into a beautiful, interactive flashcard experience. Study anywhere, anytime — no internet required after initial setup!
+
+Perfect for:
+- 🎓 **Students** preparing for exams
+- 📖 **Learners** memorizing vocabulary or concepts
+- 🧠 **Anyone** who wants to retain information effectively
+
+---
+
+## 🚀 Features
+
+| Feature | Description |
+|---------|-------------|
+| 📁 **Multi-file Support** | Load multiple CSV files and switch between topics |
+| 🔄 **RTL/LTR Toggle** | Full support for right-to-left languages (Arabic, Persian, Hebrew) |
+| 🎴 **Interactive Cards** | Click to flip and reveal answers |
+| 📊 **Progress Tracking** | Visual progress bar shows your study progress |
+| 🌙 **Dark/Light Mode** | Easy on the eyes, day or night |
+| ⌨️ **Keyboard Navigation** | Navigate with arrow keys for faster studying |
+| 📱 **Fully Responsive** | Works beautifully on desktop, tablet, and mobile |
+| 🔌 **Offline Ready** | Study without internet after initial load |
+
+---
+
+## 📸 How It Works
 
 ```
-Flash-Cards/
-├── app/
-│   ├── api/
-│   │   └── flashcards/
-│   │       └── route.ts          # API endpoint to serve CSV data
-│   ├── globals.css               # Global styles with Tailwind
-│   ├── layout.tsx                # Root layout component
-│   └── page.tsx                  # Main flash card viewer
-├── csv/
-│   ├── 1.csv                     # Your flash card files
-│   ├── 2.csv
-│   └── 3.csv
-├── lib/
-│   ├── csv-reader.ts             # CSV parsing utility
-│   └── types.ts                  # TypeScript type definitions
-├── next.config.mjs
-├── package.json
-├── postcss.config.mjs
-├── tailwind.config.ts
-└── tsconfig.json
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   NotebookLM  ──►  Export CSV  ──►  Drop in /csv folder    │
+│                                                             │
+│                         ▼                                   │
+│                                                             │
+│              ┌─────────────────────┐                        │
+│              │    Flash Cards      │                        │
+│              │    Application      │                        │
+│              │                     │                        │
+│              │   Q: Question?      │                        │
+│              │   ─────────────     │                        │
+│              │   [Click to flip]   │                        │
+│              └─────────────────────┘                        │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-## CSV File Format
+---
 
-Each CSV file should contain flash cards in the following format:
-```csv
-Question text,Answer text
-Another question,Another answer
-```
-
-**Note**: Each line represents one flash card with question and answer separated by a comma.
-
-## Getting Started
+## 🛠️ Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ installed
-- npm or yarn package manager
+- [Node.js](https://nodejs.org/) 18+ installed
 
 ### Installation
 
-1. Install dependencies:
 ```bash
+# Clone the repository
+git clone https://github.com/TheXERC/Flash-Cards.git
+
+# Navigate to project folder
+cd Flash-Cards
+
+# Install dependencies
 npm install
-```
 
-2. Add your CSV files to the `csv` folder
-
-3. Run the development server:
-```bash
+# Start the development server
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+Open [http://localhost:3000](http://localhost:3000) in your browser and start studying! 🎉
 
-### Building for Production
+---
 
-```bash
-npm run build
-npm start
+## 📁 Adding Your Flash Cards
+
+1. **Export from NotebookLM** — Download your study material as CSV
+2. **Drop the file** — Place your `.csv` file in the `/csv` folder
+3. **Refresh** — Your new flashcard set appears automatically!
+
+### CSV Format
+
+```csv
+Question text,Answer text
+Another question,Another answer
+What is the capital of France?,Paris
 ```
 
-## Usage
+> 💡 **Tip:** Each line = one flashcard. Question and answer separated by comma.
 
-1. **Select a flash card set**: Use the dropdown menu to choose which CSV file to study
-2. **Toggle text direction**: Click the RTL/LTR button to switch text direction (useful for Persian/Arabic content)
-3. **Navigate cards**: Use Previous/Next buttons or click on the card to reveal answers
-4. **Track progress**: Watch the progress bar at the bottom to see how far you've progressed
+---
 
-## Adding More Flash Cards
+## 📂 Project Structure
 
-Simply add more CSV files to the `csv` folder. The application will automatically detect and load them on the next page refresh.
+```
+Flash-Cards/
+├── 📁 app/
+│   ├── 📁 api/flashcards/    # API endpoint for CSV data
+│   ├── globals.css           # Global styles
+│   ├── layout.tsx            # Root layout
+│   └── page.tsx              # Main flashcard viewer
+├── 📁 components/            # Reusable UI components
+├── 📁 csv/                   # 👈 Your flashcard files go here!
+├── 📁 lib/                   # Utilities and types
+└── 📄 package.json
+```
 
-## Technology Stack
+---
 
-- **Next.js 16**: React framework with App Router
-- **TypeScript**: Type-safe development
-- **Tailwind CSS**: Utility-first styling
-- **shadcn/ui**: UI component library (ready to use)
+## ⌨️ Keyboard Shortcuts
 
-## Code Quality
+| Key | Action |
+|-----|--------|
+| `→` | Next card |
+| `←` | Previous card |
+| `Space` | Flip card |
 
-- Clean, maintainable code structure
-- TypeScript for type safety
-- Separated concerns (API routes, utilities, components)
-- Responsive design
-- Performance optimized
+---
 
-## License
+## 🤝 Contributing
 
-MIT
+Contributions are welcome! Feel free to:
 
-## Contributing
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Feel free to submit issues and enhancement requests!
+---
+
+## 📜 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+
+**Made with ❤️ for students everywhere**
+
+*Star ⭐ this repo if you find it helpful!*
+
+</div>
